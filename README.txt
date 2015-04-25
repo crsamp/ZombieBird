@@ -5,7 +5,7 @@ Overview: Zombie bird is pretty much flappy bird. The object of the game is to g
 explanation: My capstone will ustalize many of the concepts we learned throughout the year. One of them being something we just barely touched on while
 we were learning about GUI applications, event handling. Ill need to make sure each time the screen is pressed or spacebar is pressed if its on HTML,
 the bird goes up. another thing it will use will be good class design. There will be a lot of methods and objects that i will need to be created so good
-class design will be essential. (...)
+class design will be essential.
 
 pseudocode/checklist: 
 Bird needs to be made.
