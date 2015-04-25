@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
-
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
@@ -17,7 +17,7 @@ public class AssetLoader {
 
     public static TextureRegion skullUp, skullDown, bar;
     
-
+    public static BitmapFont font,shadow;
 
     public static void load() {
 
@@ -51,7 +51,10 @@ public class AssetLoader {
         bar = new TextureRegion(texture, 136, 16, 22, 3);
         bar.flip(false, true);
 
-
+        font = new BitmapFont(true);
+        
+        shadow = new BitmapFont(true);
+        
 
     }
 

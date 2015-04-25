@@ -1,84 +1,86 @@
 package com.kilobolt.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.kilobolt.gameobjects.Bird;
-import com.kilobolt.zbhelpers.AssetLoader;
 import com.kilobolt.gameobjects.Grass;
 import com.kilobolt.gameobjects.Pipe;
 import com.kilobolt.gameobjects.ScrollHandler;
-import com.badlogic.gdx.graphics.Color;
-
+import com.kilobolt.zbhelpers.AssetLoader;
 
 public class GameRenderer {
-	
-	private Bird bird;
-	private ScrollHandler scroller;
-	private Grass frontGrass, backGrass;
-	private Pipe pipe1, pipe2, pipe3;
-	
-	private TextureRegion bg,grass;
-	private Animation birdAnimation;
-	private TextureRegion birdMid, birdDown, birdUp;
-	private TextureRegion skullUp, skullDown, bar;
 
-	private GameWorld myWorld;
-	private OrthographicCamera cam;
-	private ShapeRenderer shapeRenderer;
+    private GameWorld myWorld;
+    private OrthographicCamera cam;
+    private ShapeRenderer shapeRenderer;
 
-	private SpriteBatch batcher;
+    private SpriteBatch batcher;
 
-	private int midPointY;
-	private int gameHeight;
+    private int midPointY;
+    private int gameHeight;
 
-	public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
-		myWorld = world;
-		this.gameHeight = gameHeight;
-		this.midPointY = midPointY;
-		cam = new OrthographicCamera();
-		cam.setToOrtho(true, 136, gameHeight);
+    // Game Objects
+    private Bird bird;
+    private ScrollHandler scroller;
+    private Grass frontGrass, backGrass;
+    private Pipe pipe1, pipe2, pipe3;
 
-		batcher = new SpriteBatch();
-		// Attach batcher to camera
-		batcher.setProjectionMatrix(cam.combined);
+    // Game Assets
+    private TextureRegion bg, grass;
+    private Animation birdAnimation;
+    private TextureRegion birdMid, birdDown, birdUp;
+    private TextureRegion skullUp, skullDown, bar;
 
-		shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setProjectionMatrix(cam.combined);
-		
-		//call helper methods to init some instance variables
-		initGameObjects();
-		initAssets();
-	}
-	
-	private void initGameObjects() {
-		bird = myWorld.getBird();
-		scroller = myWorld.getScroller();
+    public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
+        myWorld = world;
+
+        this.gameHeight = gameHeight;
+        this.midPointY = midPointY;
+
+        cam = new OrthographicCamera();
+        cam.setToOrtho(true, 136, gameHeight);
+
+        batcher = new SpriteBatch();
+        batcher.setProjectionMatrix(cam.combined);
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(cam.combined);
+
+        // Call helper methods to initialize instance variables
+        initGameObjects();
+        initAssets();
+    }
+
+    private void initGameObjects() {
+        bird = myWorld.getBird();
+        scroller = myWorld.getScroller();
         frontGrass = scroller.getFrontGrass();
         backGrass = scroller.getBackGrass();
         pipe1 = scroller.getPipe1();
         pipe2 = scroller.getPipe2();
-        pipe3 = scroller.getPipe3(); 
-	}
-	
-	private void initAssets() {
-		bg = AssetLoader.bg;
-		grass = AssetLoader.grass;
-		birdAnimation = AssetLoader.birdAnimation;
-		birdMid = AssetLoader.bird;
-		birdDown = AssetLoader.birdDown;
-		birdUp = AssetLoader.birdUp;
-		skullUp = AssetLoader.skullUp;
-		skullDown = AssetLoader.skullDown;
-		bar = AssetLoader.bar;
-	}
-	
-	private void drawGrass() {
+        pipe3 = scroller.getPipe3();
+    }
+
+    private void initAssets() {
+        bg = AssetLoader.bg;
+        grass = AssetLoader.grass;
+        birdAnimation = AssetLoader.birdAnimation;
+        birdMid = AssetLoader.bird;
+        birdDown = AssetLoader.birdDown;
+        birdUp = AssetLoader.birdUp;
+        skullUp = AssetLoader.skullUp;
+        skullDown = AssetLoader.skullDown;
+        bar = AssetLoader.bar;
+    }
+
+    private void drawGrass() {
         // Draw the grass
         batcher.draw(grass, frontGrass.getX(), frontGrass.getY(),
                 frontGrass.getWidth(), frontGrass.getHeight());
@@ -125,15 +127,11 @@ public class GameRenderer {
                 pipe3.getWidth(), midPointY + 66 - (pipe3.getHeight() + 45));
     }
 
+    public void render(float runTime) {
 
-	public void render(float runTime) {
-		
-
-        // Fill the entire screen with black, to prevent potential flickering.
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Begin ShapeRenderer
         shapeRenderer.begin(ShapeType.Filled);
 
         // Draw Background color
@@ -148,28 +146,22 @@ public class GameRenderer {
         shapeRenderer.setColor(147 / 255.0f, 80 / 255.0f, 27 / 255.0f, 1);
         shapeRenderer.rect(0, midPointY + 77, 136, 52);
 
-        // End ShapeRenderer
         shapeRenderer.end();
 
-        // Begin SpriteBatch
         batcher.begin();
-        // Disable transparency
-        // This is good for performance when drawing images that do not require
-        // transparency.
         batcher.disableBlending();
-        batcher.draw(AssetLoader.bg, 0, midPointY + 23, 136, 43);
+        batcher.draw(bg, 0, midPointY + 23, 136, 43);
 
         // 1. Draw Grass
         drawGrass();
 
         // 2. Draw Pipes
         drawPipes();
-        // The bird needs transparency, so we enable that again.
         batcher.enableBlending();
 
-        // Draw bird at its coordinates. Retrieve the Animation object from
-        // AssetLoader
-        // Pass in the runTime variable to get the current frame.
+        // 3. Draw Skulls (requires transparency)
+        drawSkulls();
+
         if (bird.shouldntFlap()) {
             batcher.draw(birdMid, bird.getX(), bird.getY(),
                     bird.getWidth() / 2.0f, bird.getHeight() / 2.0f,
@@ -181,62 +173,18 @@ public class GameRenderer {
                     bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(),
                     1, 1, bird.getRotation());
         }
-        
-        shapeRenderer.begin(ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.circle(bird.getBoundingCircle().x, bird.getBoundingCircle().y, bird.getBoundingCircle().radius);
-        shapeRenderer.end();
 
-        // End SpriteBatch
+        // Convert integer into String
+        String score = myWorld.getScore() + "";
+
+        // Draw shadow first
+        AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2)
+                - (3 * score.length()), 12);
+        // Draw text
+        AssetLoader.font.draw(batcher, "" + myWorld.getScore(), (136 / 2)
+                - (3 * score.length() - 1), 11);
+
         batcher.end();
-        
-        
-
-        shapeRenderer.begin(ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.circle(bird.getBoundingCircle().x,
-                bird.getBoundingCircle().y, bird.getBoundingCircle().radius);
-
-        /*
-         * Excuse the mess below. Temporary code for testing bounding
-         * rectangles.
-         */
-        // Bar up for pipes 1 2 and 3
-        shapeRenderer.rect(pipe1.getBarUp().x, pipe1.getBarUp().y,
-                pipe1.getBarUp().width, pipe1.getBarUp().height);
-        shapeRenderer.rect(pipe2.getBarUp().x, pipe2.getBarUp().y,
-                pipe2.getBarUp().width, pipe2.getBarUp().height);
-        shapeRenderer.rect(pipe3.getBarUp().x, pipe3.getBarUp().y,
-                pipe3.getBarUp().width, pipe3.getBarUp().height);
-
-        // Bar down for pipes 1 2 and 3
-        shapeRenderer.rect(pipe1.getBarDown().x, pipe1.getBarDown().y,
-                pipe1.getBarDown().width, pipe1.getBarDown().height);
-        shapeRenderer.rect(pipe2.getBarDown().x, pipe2.getBarDown().y,
-                pipe2.getBarDown().width, pipe2.getBarDown().height);
-        shapeRenderer.rect(pipe3.getBarDown().x, pipe3.getBarDown().y,
-                pipe3.getBarDown().width, pipe3.getBarDown().height);
-
-        // Skull up for Pipes 1 2 and 3
-        shapeRenderer.rect(pipe1.getSkullUp().x, pipe1.getSkullUp().y,
-                pipe1.getSkullUp().width, pipe1.getSkullUp().height);
-        shapeRenderer.rect(pipe2.getSkullUp().x, pipe2.getSkullUp().y,
-                pipe2.getSkullUp().width, pipe2.getSkullUp().height);
-        shapeRenderer.rect(pipe3.getSkullUp().x, pipe3.getSkullUp().y,
-                pipe3.getSkullUp().width, pipe3.getSkullUp().height);
-
-        // Skull down for Pipes 1 2 and 3
-        shapeRenderer.rect(pipe1.getSkullDown().x, pipe1.getSkullDown().y,
-                pipe1.getSkullDown().width, pipe1.getSkullDown().height);
-        shapeRenderer.rect(pipe2.getSkullDown().x, pipe2.getSkullDown().y,
-                pipe2.getSkullDown().width, pipe2.getSkullDown().height);
-        shapeRenderer.rect(pipe3.getSkullDown().x, pipe3.getSkullDown().y,
-                pipe3.getSkullDown().width, pipe3.getSkullDown().height);
-
-        shapeRenderer.end();
 
     }
-
-
-	
 }
