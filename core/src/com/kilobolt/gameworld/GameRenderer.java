@@ -16,6 +16,10 @@ import com.kilobolt.gameobjects.Pipe;
 import com.kilobolt.gameobjects.ScrollHandler;
 import com.kilobolt.zbhelpers.AssetLoader;
 
+/**
+ * @author Chris Samp
+ *
+ */
 public class GameRenderer {
 
     private GameWorld myWorld;
@@ -39,6 +43,12 @@ public class GameRenderer {
     private TextureRegion birdMid, birdDown, birdUp;
     private TextureRegion skullUp, skullDown, bar;
 
+    /** 
+     * GameRenderer init
+     * @param world GameWorld object
+     * @param gameHeight	integer height of the game screen
+     * @param midPointY	integer y midpoint of the screen
+     */
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
         myWorld = world;
 
@@ -58,6 +68,9 @@ public class GameRenderer {
         initAssets();
     }
 
+    /**
+     * initializes the bird,scroller,grass,and pipes
+     */
     private void initGameObjects() {
         bird = myWorld.getBird();
         scroller = myWorld.getScroller();
@@ -68,6 +81,9 @@ public class GameRenderer {
         pipe3 = scroller.getPipe3();
     }
 
+    /**
+     * initializes background, grass, bird, and pipes skins
+     */
     private void initAssets() {
         bg = AssetLoader.bg;
         grass = AssetLoader.grass;
@@ -80,6 +96,9 @@ public class GameRenderer {
         bar = AssetLoader.bar;
     }
 
+    /**
+     * draws the grass
+     */
     private void drawGrass() {
         // Draw the grass
         batcher.draw(grass, frontGrass.getX(), frontGrass.getY(),
@@ -88,9 +107,11 @@ public class GameRenderer {
                 backGrass.getWidth(), backGrass.getHeight());
     }
 
+    /**
+     * draws the skulls on the pipes
+     */
     private void drawSkulls() {
-        // Temporary code! Sorry about the mess :)
-        // We will fix this when we finish the Pipe class.
+        
 
         batcher.draw(skullUp, pipe1.getX() - 1,
                 pipe1.getY() + pipe1.getHeight() - 14, 24, 14);
@@ -108,9 +129,11 @@ public class GameRenderer {
                 pipe3.getY() + pipe3.getHeight() + 45, 24, 14);
     }
 
+    /**
+     * draws the pipes
+     */
     private void drawPipes() {
-        // Temporary code! Sorry about the mess :)
-        // We will fix this when we finish the Pipe class.
+        
         batcher.draw(bar, pipe1.getX(), pipe1.getY(), pipe1.getWidth(),
                 pipe1.getHeight());
         batcher.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45,
@@ -127,6 +150,9 @@ public class GameRenderer {
                 pipe3.getWidth(), midPointY + 66 - (pipe3.getHeight() + 45));
     }
 
+    /**
+     * @param runTime float how often the screen renders
+     */
     public void render(float runTime) {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);

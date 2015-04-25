@@ -3,6 +3,10 @@ package com.kilobolt.gameobjects;
 import com.kilobolt.gameworld.GameWorld;
 import com.kilobolt.zbhelpers.AssetLoader;
 
+/**
+ * @author Chris Samp
+ *
+ */
 public class ScrollHandler {
 	
 	private Grass frontGrass,backGrass;
@@ -13,6 +17,10 @@ public class ScrollHandler {
 	public static final int SCROLL_SPEED = -59;
 	public static final int PIPE_GAP = 49;
 	
+	/**
+	 * @param gameWorld the world you want to add all the objects onto
+	 * @param yPos	y position of the objects
+	 */
 	public ScrollHandler(GameWorld gameWorld, float yPos) {
         this.gameWorld = gameWorld;
         frontGrass = new Grass(0, yPos, 143, 11, SCROLL_SPEED);
@@ -26,6 +34,11 @@ public class ScrollHandler {
                 yPos);
     }
 	
+	/**
+	 * checks to see if the pipes are grass has scrolled off the screen and if it has
+	 * it replaces it.
+	 * @param delta change in position
+	 */
 	public void update(float delta) {
 		
 		frontGrass.update(delta);
@@ -51,6 +64,9 @@ public class ScrollHandler {
 		}
 	}
 	
+	/**
+	 * makes the grass and pipes stop scrolling
+	 */
 	public void stop() {
         frontGrass.stop();
         backGrass.stop();
@@ -59,6 +75,12 @@ public class ScrollHandler {
         pipe3.stop();
     }
 
+    /**
+     * checks to see if the bird has crossed the midway point of the tube so
+     * it can add the point to your score.
+     * @param bird bird object
+     * @return boolean
+     */
     public boolean collides(Bird bird) {
     	if (!pipe1.isScored()
                 && pipe1.getX() + (pipe1.getWidth() / 2) < bird.getX()
@@ -86,26 +108,48 @@ public class ScrollHandler {
                 .collides(bird));
     }
     
+    /**
+     * @param increment integer The amount you want to add to score
+     */
     private void addScore(int increment) {
     	gameWorld.addScore(increment);
     }
 	
+	/**
+	 * returns the frontGrass object
+	 * @return Grass object
+	 */
 	public Grass getFrontGrass() {
 		return frontGrass;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Grass getBackGrass() {
 		return backGrass;
 	}
 	
+	/**
+	 * returns pipe 1
+	 * @return Pipe object
+	 */
 	public Pipe getPipe1() {
 		return pipe1;
 	}
 	
+	/**
+	 * returns pipe 2
+	 * @return Pipe object
+	 */
 	public Pipe getPipe2() {
 		return pipe2;
 	}
 	
+	/**
+	 * returns pipe 3
+	 * @return Pipe object
+	 */
 	public Pipe getPipe3() {
 		return pipe3;
 	}

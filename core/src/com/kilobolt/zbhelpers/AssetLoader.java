@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * @author Chris Samp
+ *
+ */
 public class AssetLoader {
 
     public static Texture texture;
@@ -19,6 +23,9 @@ public class AssetLoader {
     
     public static BitmapFont font,shadow;
 
+    /**
+     *  loads all the textures used for the tubes,grass,background, and bird
+     */
     public static void load() {
 
         texture = new Texture(Gdx.files.internal("data/texture.png"));
@@ -58,6 +65,9 @@ public class AssetLoader {
 
     }
 
+    /**
+     * gets rid of the texture
+     */
     public static void dispose() {
         // We must dispose of the texture when we are finished.
         texture.dispose();
